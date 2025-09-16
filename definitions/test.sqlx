@@ -13,12 +13,12 @@ WITH ranked_orders AS (
     ROW_NUMBER() OVER (
       PARTITION BY age
       ORDER BY student_id DESC
-    ) AS row_num
+    ) AS rn
   FROM cloudside-academy.ravee_dbt.college_data
 )
 SELECT *
 FROM ranked_orders
-WHERE row_num = 1 
+WHERE rn in (1,2) 
 order by age 
 
 
