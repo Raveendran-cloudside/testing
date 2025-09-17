@@ -16,10 +16,11 @@ WITH ranked_orders AS (
     ) AS rn
   FROM cloudside-academy.ravee_dbt.college_data
 )
-SELECT *
+SELECT * except(year_of_joining)
 FROM ranked_orders
 WHERE rn in (1,2,3) 
 order by age 
+
 
 
 
