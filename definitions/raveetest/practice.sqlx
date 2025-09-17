@@ -1,4 +1,4 @@
-config {
+ config {
   type: "table",
   schema: "ravee_dbt",
   name: "college_data_practice",
@@ -16,10 +16,11 @@ WITH ranked_orders AS (
     ) AS rn
   FROM cloudside-academy.ravee_dbt.college_data
 )
-SELECT *
+SELECT * except(year_of_joining)
 FROM ranked_orders
 WHERE rn in (1) 
 order by age 
+
 
 
 
