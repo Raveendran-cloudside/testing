@@ -1,0 +1,26 @@
+config {
+  type: "table",
+  schema: "ravee_dbt",
+  name: "college_data_df",
+  tags: ["college", "id"],
+  description: "This is a table of college data."
+}
+
+
+WITH ranked_orders AS (
+  SELECT
+    *,
+    ROW_NUMBER() OVER (
+      PARTITION BY age
+      ORDER BY student_id DESC
+    ) AS rn
+  FROM cloudside-academy.ravee_dbt.college_data
+)
+SELECT *
+FROM ranked_orders
+WHERE rn in (1) 
+order by age 
+
+
+
+-
