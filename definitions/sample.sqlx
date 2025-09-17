@@ -18,8 +18,9 @@ WITH ranked_orders AS (
 )
 SELECT *
 FROM ranked_orders
-WHERE rn in (1,2) 
+WHERE rn in (1,2,3) 
 order by age 
+
 
 
 
