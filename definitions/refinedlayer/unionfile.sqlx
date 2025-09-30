@@ -1,0 +1,53 @@
+config {
+  type: "incremental",
+  schema: "ravee_test",
+  name: "refined_table",
+  uniqueKey: ["emp_id"],
+  bigquery: {
+    partitionBy: "date_trunc(hire_date, month)"
+  }
+}
+
+-- List of integers from 0 to 99,999 with random date, name, and city
+WITH dd AS (
+  SELECT 0 AS d 
+  UNION ALL SELECT 1 
+  UNION ALL SELECT 2 
+  UNION ALL SELECT 3
+  UNION ALL SELECT 4 
+  UNION ALL SELECT 5 
+  UNION ALL SELECT 6
+  -- UNION ALL SELECT 7 
+  -- UNION ALL SELECT 8 
+  -- UNION ALL SELECT 9
+),
+nn AS (
+  SELECT 
+    10000 * d4.d + 1000 * d3.d + 100 * d2.d + 10 * d1.d + d0.d AS emp_id,
+
+    -- Random date within last year
+    DATE_ADD(
+      DATE_SUB(CURRENT_DATE(), INTERVAL 365 DAY),
+      INTERVAL CAST(FLOOR(RAND()*365) AS INT64) DAY
+    ) AS hire_date,
+
+    -- Random name
+    (ARRAY<STRING>['Alice','Bob','Charlie','David','Eva',
+                   'Frank','Grace','Helen','Ivy','Jack'])
+      [OFFSET(CAST(FLOOR(RAND()*10) AS INT64))] AS emp_name,
+
+
+    -- Random city
+    (ARRAY<STRING>['New York','Los Angeles','Chicago','Houston','Miami',
+                   'San Francisco','Seattle','Boston','Denver','Dallas'])
+      [OFFSET(CAST(FLOOR(RAND()*10) AS INT64))] AS city_name
+
+  FROM dd d0
+  CROSS JOIN dd d1
+  CROSS JOIN dd d2
+  CROSS JOIN dd d3
+  CROSS JOIN dd d4
+)
+SELECT *
+FROM nn
+-- ORDER BY emp_id DESC

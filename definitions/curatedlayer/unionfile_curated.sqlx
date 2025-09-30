@@ -1,0 +1,17 @@
+
+config {
+  type: "table",
+  schema: "ravee_test",
+  name: "unionfile_c"
+}
+
+
+SELECT emp_id, hire_date from ${ref("refined_table")}
+where 
+extract(month from hire_date) = 10 and 
+extract(day from hire_date) between 01 and 10 and
+extract(year from hire_date) <= 2024
+
+
+
+--${ref("refinedlayer/unionfile")}
